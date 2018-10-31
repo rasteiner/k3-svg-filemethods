@@ -1,0 +1,19 @@
+{
+    "name": "rasteiner/k3-svg-filemethods",
+    "description": "K3 plugin. File methods for SVG files.",
+    "authors": [
+        {
+            "name": "Roman Steiner",
+            "email": "roman@toastlab.ch"
+        }
+    ],
+    "require": {
+        "getkirby/cms": "*"
+    },
+    "license": "ISC",
+    "autoload": {
+        "files": [
+            "index.php"
+        ]
+    }
+}
