@@ -1,6 +1,6 @@
 # TrimSVG File method
 
-K3 plugin. A file method that allows you to trim an svg file to its visible bounds.
+K3 plugin. File methods for SVG files.
 
 ## Install 
 
@@ -9,15 +9,20 @@ K3 plugin. A file method that allows you to trim an svg file to its visible boun
 Copy plugin folder into `site/plugins`
 
 ### Composer
-Run `composer require rasteiner/k3-trimsvg-filemethod`.
+Run `composer require rasteiner/k3-svg-filemethods`.
+
+## Features
+
+ - Trim an svg file to its visible bounds
+ - Rotate an svg file by any degree.
 
 ## Usage example
 
 In a template, a page contains an svg file. 
 
-```php
+```html+php
 <?php if($img = $page->image('graphic.svg')): ?>
-    <img src="<?php echo $img->trimSVG()->url() ?>" alt="">
+    <img src="<?php echo $img->trimSVG()->rotate(90)->url() ?>" alt="">
 <?php endif; ?>
 ```
 
