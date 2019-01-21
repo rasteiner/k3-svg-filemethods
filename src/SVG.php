@@ -10,6 +10,7 @@ use Kirby\Data\Data;
 use \Imagick;
 use \Throwable;
 use Kirby\Toolkit\Str;
+use Kirby\Cms\FileVersion;
 
 class SVG {
     protected static $defaultComponents = null;
@@ -22,9 +23,11 @@ class SVG {
     }
 
     public static function trim($contents) {
+
         $magick = new Imagick();
         $magick->readImageBlob($contents);
         $magick->trimImage(0);
+
 
         $imagePage = $magick->getImagePage();
         $dimensions = $magick->getImageGeometry();
@@ -116,7 +119,7 @@ class SVG {
         return $dom->saveXML();      
     }
 
-    public static function component_url(App $kirby, Model $file, array $options) {
+    public static function component_version(App $kirby, Model $file, array $options = []) {
 
         if (isset($options['trimSVG']) || isset($options['rotateSVG'])) {
             if ($file->extension() == 'svg') {
@@ -130,7 +133,7 @@ class SVG {
                 $attributes = array_filter($attributes, function ($a) {
                     return !!$a;
                 });
-                
+
                 $dst = $mediaRoot . '/{{ name }}-' . implode('-', $attributes) . '.svg';
                 $thumb = (new Filename($file->root(), $dst, []))->toString();
                 $thumbName = basename($thumb);
@@ -145,15 +148,21 @@ class SVG {
                     }
                 }
 
-                return $parent->mediaUrl() . '/' . $file->mediaHash() . '/' . $thumbName;
+                return new FileVersion([
+                    'modifications' => $options,
+                    'original' => $file,
+                    'root' => $thumb,
+                    'url' => $parent->mediaUrl() . '/' . $file->mediaHash() . '/' . $thumbName,
+                ]);
             }
         }
 
-        //fallback to default
-        return static::get_default_component('file::url')($kirby, $file, $options);
+
+        return static::get_default_component('file::version')($kirby, $file, $options);
     }
 
     public static function component_thumb(App $kirby, string $src, string $dst, array $options) {
+
         if (isset($options['rotateSVG']) || isset($options['trimSVG'])) {
             $content = file_get_contents($src);
 
