@@ -6,7 +6,7 @@ use rasteiner\k3_svg_filemethods\SVG;
 
 Kirby::plugin('rasteiner/k3-svg-filemethods', [
     'components' => [
-        'file::url' => [SVG::class, 'component_url'],
+        'file::version' => [SVG::class, 'component_version'],
         'thumb' => [SVG::class, 'component_thumb']
     ],
     'fileMethods' => [
@@ -14,7 +14,7 @@ Kirby::plugin('rasteiner/k3-svg-filemethods', [
             if ($this->extension() !== 'svg') {
                 return null;
             }
-
+            
             return $this->thumb(['trimSVG' => true]);
         },
         'rotateSVG' => function ($deg) {
